@@ -2,15 +2,24 @@
 #include "errors.h"
 
 // Initialization/Deinitialization
-dynamic_array_t* init_dynamic_array(void)
+enum ds_error init_dynamic_array(dynamic_array_t* arr)
 {
-	dynamic_array_t* arr = malloc(sizeof(dynamic_array_t));
+	arr = malloc(sizeof(dynamic_array_t));
+	if (!arr)
+	{
+		return DS_ERR_ALLOC_FAIL;
+	}
 
 	arr->size = 0;
 	arr->capacity = 1;
-	arr->array = malloc(sizeof(int) * arr->capacity);
+	int* tmp = malloc(sizeof(int) * arr->capacity);
+	if (!tmp)
+	{
+		return DS_ERR_ALLOC_FAIL;
+	}
+	arr->array = tmp;
 
-	return arr;
+	return DS_OK;
 }
 
 void free_dynamic_array(dynamic_array_t* arr)
@@ -20,24 +29,25 @@ void free_dynamic_array(dynamic_array_t* arr)
 }
 
 // Access functions
-int at(dynamic_array_t* arr, int index)
+enum ds_error at(dynamic_array_t* arr, int* var, int index)
 {
 	if (index > (int)arr->capacity)
 	{
-		return -1;
+		return DS_ERR_IOB;
 	}
 
-	return arr->array[index];
+	*var = arr->array[index];
+	return DS_OK;
 }
 
-int front(dynamic_array_t* arr)
+void front(dynamic_array_t* arr, int* val)
 {
-	return arr->array[0];
+	*val = arr->array[0];
 }
 
-int back(dynamic_array_t* arr)
+void back(dynamic_array_t* arr, int* val)
 {
-	return arr->array[arr->size - 1];
+	*val = arr->array[arr->size - 1];
 }
 
 // Capacity/size functions

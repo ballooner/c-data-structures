@@ -3,7 +3,8 @@
 
 int main(void)
 {
-	dynamic_array_t* arr = init_dynamic_array();
+	dynamic_array_t* arr;
+	init_dynamic_array(arr);
 
 
 	free_dynamic_array(arr);

@@ -15,13 +15,13 @@ typedef struct DynamicArray
 } dynamic_array_t;
 
 // Initialization/Deinitialization
-dynamic_array_t* init_dynamic_array(void);
+enum ds_error init_dynamic_array(dynamic_array_t* arr);
 void free_dynamic_array(dynamic_array_t* arr);
 
 // Access functions
-int at(dynamic_array_t* arr, int index);
-int front(dynamic_array_t* arr);
-int back(dynamic_array_t* arr);
+enum ds_error at(dynamic_array_t* arr, int* var, int index);
+void front(dynamic_array_t* arr, int* val);
+void back(dynamic_array_t* arr, int* val);
 
 // Capacity/size functions
 static enum ds_error increase_size(dynamic_array_t* arr);
