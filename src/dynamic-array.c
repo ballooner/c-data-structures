@@ -1,4 +1,5 @@
 #include "dynamic-array.h"
+#include "errors.h"
 
 // Initialization/Deinitialization
 dynamic_array_t* init_dynamic_array(void)
@@ -7,7 +8,7 @@ dynamic_array_t* init_dynamic_array(void)
 
 	arr->size = 0;
 	arr->capacity = 1;
-	arr->array = malloc(sizeof(int));
+	arr->array = malloc(sizeof(int) * arr->capacity);
 
 	return arr;
 }
@@ -21,7 +22,7 @@ void free_dynamic_array(dynamic_array_t* arr)
 // Access functions
 int at(dynamic_array_t* arr, int index)
 {
-	if (index > (int)arr->size)
+	if (index > (int)arr->capacity)
 	{
 		return -1;
 	}
@@ -40,10 +41,25 @@ int back(dynamic_array_t* arr)
 }
 
 // Capacity/size functions
-static void increase_size(dynamic_array_t* arr)
+static enum ds_error increase_size(dynamic_array_t* arr)
 {
+	if (arr->capacity == MAX_CAPACITY)
+	{
+		return DS_ERR_OUT_OF_MEMORY;
+	}
 
+	arr->capacity *= 2;
+	
+	int *newArray = realloc(arr->array, sizeof(int) * arr->capacity);
+	if (!newArray)
+	{
+		return DS_ERR_ALLOC_FAIL;
+	}
+	arr->array = newArray;
+
+	return DS_OK;
 }
+
 bool empty(dynamic_array_t* arr);
 size_t size(dynamic_array_t* arr);
 size_t max_size(dynamic_array_t* arr);

@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include "errors.h"
+
+#define MAX_CAPACITY 1024
 
 typedef struct DynamicArray
 {
@@ -21,7 +24,7 @@ int front(dynamic_array_t* arr);
 int back(dynamic_array_t* arr);
 
 // Capacity/size functions
-static void increase_size(dynamic_array_t* arr);
+static enum ds_error increase_size(dynamic_array_t* arr);
 bool empty(dynamic_array_t* arr);
 size_t size(dynamic_array_t* arr);
 size_t max_size(dynamic_array_t* arr);
