@@ -23,6 +23,41 @@ dynamic_array_t* init_dynamic_array(void)
 		{
 			free(arr);
 		}
+
+		return NULL;
+	}
+
+	return arr;
+}
+
+dynamic_array_t* init_size_dynamic_array(size_t size)
+{
+	if (size >= MAX_CAPACITY)
+	{
+		size = MAX_CAPACITY;
+	}
+
+	dynamic_array_t* arr = malloc(sizeof(dynamic_array_t));
+	int* tmp = malloc(sizeof(int) * size);
+	
+	if (arr != NULL && tmp != NULL)
+	{
+		arr->size = 0;
+		arr->capacity = size;
+		arr->array = tmp;
+	} else
+	{
+		if (tmp == NULL)
+		{
+			free(tmp);
+		}
+
+		if (arr == NULL)
+		{
+			free(arr);
+		}
+
+		return NULL;
 	}
 
 	return arr;
@@ -107,6 +142,28 @@ size_t capacity(dynamic_array_t* arr)
 
 // Modifiers
 enum ds_error clear(dynamic_array_t* arr);
-enum ds_error insert(dynamic_array_t* arr, int val, int i);
+enum ds_error insert(dynamic_array_t* arr, int val, int index)
+{
+	if (arr->size + 1 == arr->capacity)
+	{
+		enum ds_error rc = increase_size(arr);
+
+		if (rc != DS_OK)
+		{
+			return rc;
+		}
+	}
+	arr->size++;
+
+	int prevVal;
+	for (int i = index; i < arr->size; i++)
+	{
+		prevVal = arr->array[i];
+		arr->array[i] = val;
+		val = prevVal;
+	}
+
+	return DS_OK;
+}
 enum ds_error push_back(dynamic_array_t* arr, int val);
 int pop_back(dynamic_array_t* arr);
