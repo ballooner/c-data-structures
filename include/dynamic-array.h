@@ -31,6 +31,6 @@ size_t capacity(dynamic_array_t* arr);
 void clear(dynamic_array_t* arr);
 enum ds_error insert(dynamic_array_t* arr, int val, int index);
 enum ds_error push_back(dynamic_array_t* arr, int val);
-int pop_back(dynamic_array_t* arr);
+enum ds_error pop_back(dynamic_array_t* arr);
 
 #endif

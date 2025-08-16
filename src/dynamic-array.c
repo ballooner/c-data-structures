@@ -187,7 +187,7 @@ enum ds_error push_back(dynamic_array_t* arr, int val)
 	return DS_OK;
 }
 
-int pop_back(dynamic_array_t* arr)
+enum ds_error pop_back(dynamic_array_t* arr)
 {
 	if (arr->size == 0)
 	{
