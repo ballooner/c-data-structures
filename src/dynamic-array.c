@@ -90,7 +90,7 @@ enum ds_error at(dynamic_array_t* arr, int* var, int index)
 }
 
 // Capacity/size functions
-static enum ds_error increase_size(dynamic_array_t* arr)
+static enum ds_error increase_capacity(dynamic_array_t* arr)
 {
 	if (arr == NULL)
 	{
@@ -141,12 +141,16 @@ size_t capacity(dynamic_array_t* arr)
 }
 
 // Modifiers
-enum ds_error clear(dynamic_array_t* arr);
+void clear(dynamic_array_t* arr)
+{
+	arr->size = 0;
+}
+
 enum ds_error insert(dynamic_array_t* arr, int val, int index)
 {
 	if (arr->size + 1 == arr->capacity)
 	{
-		enum ds_error rc = increase_size(arr);
+		enum ds_error rc = increase_capacity(arr);
 
 		if (rc != DS_OK)
 		{
@@ -156,7 +160,7 @@ enum ds_error insert(dynamic_array_t* arr, int val, int index)
 	arr->size++;
 
 	int prevVal;
-	for (int i = index; i < arr->size; i++)
+	for (int i = index; i < (int)arr->size; i++)
 	{
 		prevVal = arr->array[i];
 		arr->array[i] = val;
@@ -165,5 +169,32 @@ enum ds_error insert(dynamic_array_t* arr, int val, int index)
 
 	return DS_OK;
 }
-enum ds_error push_back(dynamic_array_t* arr, int val);
-int pop_back(dynamic_array_t* arr);
+
+enum ds_error push_back(dynamic_array_t* arr, int val)
+{
+	if (arr->size + 1 >= arr->capacity)
+	{
+		enum ds_error rc = increase_capacity(arr);
+		if (rc != DS_OK)
+		{
+			return rc;
+		}
+	}
+
+	arr->array[arr->size] = val;
+	arr->size++;
+
+	return DS_OK;
+}
+
+int pop_back(dynamic_array_t* arr)
+{
+	if (arr->size == 0)
+	{
+		return DS_OK;
+	}
+
+	arr->size--;
+	
+	return DS_OK;
+}
